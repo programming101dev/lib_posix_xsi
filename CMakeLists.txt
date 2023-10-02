@@ -54,14 +54,6 @@ set(HEADER_LIST
         ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_wchar.h
 )
 
-set(HEADER_LIST_ARPA 
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/arpa/p101_inet.h
-)
-
-set(HEADER_LIST_NET 
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/net/p101_if.h
-)
-
 set(HEADER_LIST_SYS
         ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_ipc.h
         ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_mman.h
@@ -88,7 +80,10 @@ target_link_libraries(p101_posix_xsi PRIVATE -fsanitize=undefined)
 target_include_directories(p101_posix_xsi PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # Link libraries (if needed)
+target_link_libraries(p101_posix_xsi PRIVATE iconv)
+target_link_libraries(p101_posix_xsi PRIVATE p101_error)
 target_link_libraries(p101_posix_xsi PRIVATE p101_env)
+target_link_libraries(p101_posix_xsi PRIVATE p101_c)
 
 # Common compiler flags
 set(STANDARD_FLAGS
@@ -96,7 +91,7 @@ set(STANDARD_FLAGS
         -D_XOPEN_SOURCE=700
         -D_GNU_SOURCE
 #        -D_DEFAULT_SOURCE
-#        -D_DARWIN_C_SOURCE
+        -D_DARWIN_C_SOURCE
 #        -D__BSD_VISIBLE
         -Werror
 )
@@ -405,11 +400,11 @@ set(WARNING_FLAGS
         -Wdll-attribute-on-redeclaration
         -Wdllexport-explicit-instantiation-decl
         -Wdllimport-static-field-def
-        -Wdocumentation
-        -Wdocumentation-deprecated-sync
-        -Wdocumentation-html
-        -Wdocumentation-pedantic
-        -Wdocumentation-unknown-command
+        #        -Wdocumentation
+        #        -Wdocumentation-deprecated-sync
+        #        -Wdocumentation-html
+        #        -Wdocumentation-pedantic
+        #        -Wdocumentation-unknown-command
         -Wdollars-in-identifier-extension
         -Wdollar-in-identifier-extension
         -Wdtor-name
@@ -882,7 +877,7 @@ set(WARNING_FLAGS
         -Wunusable-partial-specialization
         -Wunused-argument
         -Wno-unused-command-line-argument   # something is wrong with clang
-#        -Wunused-command-line-argument   # something is wrong with clang
+        #        -Wunused-command-line-argument   # something is wrong with clang
         -Wunused-comparison
         -Wunused-exception-parameter
         -Wunused-getter-return-value
@@ -1039,7 +1034,7 @@ find_program(CLANG_TIDY NAMES "clang-tidy" REQUIRED)
 
 # Format source files using clang-format
 add_custom_target(format
-        COMMAND ${CLANG_FORMAT} --style=file -i ${SOURCES} ${HEADER_LIST} ${HEADER_LIST_ARPA} ${HEADER_LIST_NET} ${HEADER_LIST_SYS}
+        COMMAND ${CLANG_FORMAT} --style=file -i ${SOURCES} ${HEADER_LIST} ${HEADER_LIST_SYS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Running clang-format on source files"
 )
@@ -1047,7 +1042,7 @@ add_custom_target(format
 # Lint source files using clang-tidy
 add_custom_target(lint
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMAND ${CLANG_TIDY} ${SOURCES} -quiet --warnings-as-errors='*' -checks=*,-llvmlibc-restrict-system-libc-headers,-altera-struct-pack-align,-readability-identifier-length,-altera-unroll-loops,-cppcoreguidelines-init-variables,-cert-err33-c,-modernize-macro-to-enum,-bugprone-easily-swappable-parameters,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,-altera-id-dependent-backward-branch,-concurrency-mt-unsafe,-misc-unused-parameters,-hicpp-signed-bitwise,-google-readability-todo,-cert-msc30-c,-cert-msc50-cpp,-readability-function-cognitive-complexity,-clang-analyzer-security.insecureAPI.strcpy,-cert-env33-c,-android-cloexec-accept,-clang-analyzer-security.insecureAPI.rand,-misc-include-cleaner -- ${CMAKE_C_FLAGS} ${COMMON_FLAGS} -I${CMAKE_SOURCE_DIR}/include
+        COMMAND ${CLANG_TIDY} ${SOURCES} -quiet --warnings-as-errors='*' -checks=*,-llvmlibc-restrict-system-libc-headers,-altera-struct-pack-align,-readability-identifier-length,-altera-unroll-loops,-cppcoreguidelines-init-variables,-cert-err33-c,-modernize-macro-to-enum,-bugprone-easily-swappable-parameters,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,-altera-id-dependent-backward-branch,-concurrency-mt-unsafe,-misc-unused-parameters,-hicpp-signed-bitwise,-google-readability-todo,-cert-msc30-c,-cert-msc50-cpp,-readability-function-cognitive-complexity,-clang-analyzer-security.insecureAPI.strcpy,-cert-env33-c,-android-cloexec-accept,-clang-analyzer-security.insecureAPI.rand,-misc-include-cleaner -- ${CMAKE_C_FLAGS} ${COMMON_FLAGS} -I${CMAKE_SOURCE_DIR}/include -I/usr/local/include
         COMMENT "Running clang-tidy"
 )
 

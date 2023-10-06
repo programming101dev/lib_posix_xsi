@@ -124,7 +124,7 @@ char *p101_realpath(const struct p101_env *env, struct p101_error *err, const ch
     return ret_val;
 }
 
-unsigned short *p101_seed48(const struct p101_env *env, unsigned short seed16v[3])
+unsigned short *p101_seed48(const struct p101_env *env, unsigned short seed16v[3])    // cppcheck-suppress constParameter
 {
     unsigned short *ret_val;
 

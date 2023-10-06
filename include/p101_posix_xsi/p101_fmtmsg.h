@@ -24,8 +24,7 @@ extern "C"
 {
 #endif
 
-    int p101_fmtmsg(const struct p101_env *env, struct p101_error *err, long classification, const char *label, int severity, const char *text, const char *action,
-                    const char *tag);
+    int p101_fmtmsg(const struct p101_env *env, struct p101_error *err, long classification, const char *label, int severity, const char *text, const char *action, const char *tag);
 
 #ifdef __cplusplus
 }

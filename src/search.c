@@ -54,7 +54,7 @@ void p101_insque(const struct p101_env *env, void *element, void *pred)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-void *p101_lfind(const struct p101_env *env, struct p101_error *err, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))
+void *p101_lfind(const struct p101_env *env, struct p101_error *err, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))    // cppcheck-suppress constParameterPointer
 {
     void *ret_val;
 
@@ -75,7 +75,7 @@ void *p101_lfind(const struct p101_env *env, struct p101_error *err, const void 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-void *p101_lsearch(const struct p101_env *env, struct p101_error *err, const void *key, void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))
+void *p101_lsearch(const struct p101_env *env, struct p101_error *err, const void *key, void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))    // cppcheck-suppress constParameterPointer
 {
     void *ret_val;
 

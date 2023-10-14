@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(p101_posix_xsi
-        VERSION 0.0.1
-        DESCRIPTION ""
-        LANGUAGES C)
+    VERSION 0.0.1
+    DESCRIPTION ""
+    LANGUAGES C)
 
 message(STATUS "Compiler being used: ${CMAKE_C_COMPILER}")
 
@@ -12,57 +12,57 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 # Source files for the library
 set(SOURCES
-        ${CMAKE_SOURCE_DIR}/src/dirent.c
-        ${CMAKE_SOURCE_DIR}/src/fmtmsg.c
-        ${CMAKE_SOURCE_DIR}/src/ftw.c
-        ${CMAKE_SOURCE_DIR}/src/grp.c
-        ${CMAKE_SOURCE_DIR}/src/libgen.c
-        ${CMAKE_SOURCE_DIR}/src/math.c
-        ${CMAKE_SOURCE_DIR}/src/ndbm.c
-        ${CMAKE_SOURCE_DIR}/src/pwd.c
-        ${CMAKE_SOURCE_DIR}/src/search.c
-        ${CMAKE_SOURCE_DIR}/src/signal.c
-        ${CMAKE_SOURCE_DIR}/src/stdlib.c
-        ${CMAKE_SOURCE_DIR}/src/string.c
-        ${CMAKE_SOURCE_DIR}/src/strings.c
-        ${CMAKE_SOURCE_DIR}/src/syslog.c
-        ${CMAKE_SOURCE_DIR}/src/time.c
-        ${CMAKE_SOURCE_DIR}/src/unistd.c
-        ${CMAKE_SOURCE_DIR}/src/utmpx.c
-        ${CMAKE_SOURCE_DIR}/src/wchar.c
+    ${CMAKE_SOURCE_DIR}/src/dirent.c
+    ${CMAKE_SOURCE_DIR}/src/fmtmsg.c
+    ${CMAKE_SOURCE_DIR}/src/ftw.c
+    ${CMAKE_SOURCE_DIR}/src/grp.c
+    ${CMAKE_SOURCE_DIR}/src/libgen.c
+    ${CMAKE_SOURCE_DIR}/src/math.c
+    ${CMAKE_SOURCE_DIR}/src/ndbm.c
+    ${CMAKE_SOURCE_DIR}/src/pwd.c
+    ${CMAKE_SOURCE_DIR}/src/search.c
+    ${CMAKE_SOURCE_DIR}/src/signal.c
+    ${CMAKE_SOURCE_DIR}/src/stdlib.c
+    ${CMAKE_SOURCE_DIR}/src/string.c
+    ${CMAKE_SOURCE_DIR}/src/strings.c
+    ${CMAKE_SOURCE_DIR}/src/syslog.c
+    ${CMAKE_SOURCE_DIR}/src/time.c
+    ${CMAKE_SOURCE_DIR}/src/unistd.c
+    ${CMAKE_SOURCE_DIR}/src/utmpx.c
+    ${CMAKE_SOURCE_DIR}/src/wchar.c
 )
 
 # Define the list of header files to install
 set(HEADER_LIST
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_dirent.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_fmtmsg.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_ftw.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_grp.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_libgen.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_math.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_ndbm.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_pwd.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_search.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_signal.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_stdlib.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_string.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_strings.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_syslog.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_time.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_unistd.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_utmpx.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_wchar.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_dirent.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_fmtmsg.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_ftw.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_grp.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_libgen.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_math.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_ndbm.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_pwd.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_search.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_signal.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_stdlib.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_string.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_strings.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_syslog.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_time.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_unistd.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_utmpx.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/p101_wchar.h
 )
 
 set(HEADER_LIST_SYS
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_ipc.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_mman.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_msg.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_resource.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_sem.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_shm.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_stat.h
-        ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_time.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_ipc.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_mman.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_msg.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_resource.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_sem.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_shm.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_stat.h
+    ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/p101_time.h
 )
 
 # Build the shared library
@@ -132,13 +132,9 @@ target_compile_options(p101_posix_xsi PRIVATE
     ${SANITIZER_FLAGS_LIST}
 )
 
-# Get compiler flags for the target
-# get_target_property(COMPILE_OPTIONS p101_posix_xsi COMPILE_OPTIONS)
-# string(REPLACE ";" " " COMPILE_OPTIONS_STR "${COMPILE_OPTIONS}")
-
-find_program(CLANG_FORMAT NAMES "clang-format" REQUIRED)
-find_program(CLANG_TIDY NAMES "clang-tidy" REQUIRED)
-find_program(CPPCHECK NAMES "cppcheck" REQUIRED)
+find_program(CLANG_FORMAT NAMES ${CLANG_FORMAT_NAME} REQUIRED)
+find_program(CLANG_TIDY NAMES ${CLANG_TIDY_NAME} REQUIRED)
+find_program(CPPCHECK NAMES ${CPPCHECK_NAME} REQUIRED)
 
 # Format source files using clang-format
 add_custom_target(format
@@ -165,28 +161,28 @@ add_custom_target(cppcheck
 if (CMAKE_C_COMPILER MATCHES ".*/clang.*")
     # Add a custom target for clang --analyze
     add_custom_target(analysis
-            COMMAND ${CMAKE_C_COMPILER} --analyze --analyzer-output text -Xclang -analyzer-checker=core --analyze -Xclang -analyzer-checker=deadcode -Xclang -analyzer-checker=security -Xclang -analyzer-disable-checker=security.insecureAPI.DeprecatedOrUnsafeBufferHandling -Xclang -analyzer-checker=unix -Xclang -analyzer-checker=unix ${CMAKE_C_FLAGS} ${STANDARD_FLAGS} -I${CMAKE_SOURCE_DIR}/include -I/usr/local/include ${SOURCES} ${HEADER_LIST}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            COMMENT "Running clang --analyze"
+        COMMAND ${CMAKE_C_COMPILER} --analyze --analyzer-output text -Xclang -analyzer-checker=core --analyze -Xclang -analyzer-checker=deadcode -Xclang -analyzer-checker=security -Xclang -analyzer-disable-checker=security.insecureAPI.DeprecatedOrUnsafeBufferHandling -Xclang -analyzer-checker=unix -Xclang -analyzer-checker=unix ${CMAKE_C_FLAGS} ${STANDARD_FLAGS} -I${CMAKE_SOURCE_DIR}/include -I/usr/local/include ${SOURCES} ${HEADER_LIST}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Running clang --analyze"
     )
 
     # Add a custom command to delete .gch files after the analysis
     add_custom_command(
-            TARGET analysis POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/*.gch ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/*.gch
-            COMMENT "Removing .gch files"
+        TARGET analysis POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/*.gch ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/*.gch
+        COMMENT "Removing .gch files"
     )
 
     # Add dependencies including 'analysis' for Clang compiler
     add_custom_target(strict
-            DEPENDS p101_posix_xsi analysis lint cppcheck
-            COMMENT "Running code analysis tools"
+        DEPENDS p101_posix_xsi analysis lint cppcheck
+        COMMENT "Running code analysis tools"
     )
 else()
     # Add dependencies without 'analysis' for other compilers
     add_custom_target(strict
-            DEPENDS p101_posix_xsi lint cppcheck
-            COMMENT "Running code analysis tools"
+        DEPENDS p101_posix_xsi lint cppcheck
+        COMMENT "Running code analysis tools"
     )
 endif()
 
@@ -200,21 +196,21 @@ set(INSTALL_LIB_DIR lib${LIBSUFFIX} CACHE PATH "Installation directory for libra
 mark_as_advanced(INSTALL_LIB_DIR)
 
 set_target_properties(p101_posix_xsi PROPERTIES
-        VERSION ${PROJECT_VERSION}
-        SOVERSION ${PROJECT_VERSION_MAJOR})
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR})
 
 # Install the library target
 install(TARGETS p101_posix_xsi
-        LIBRARY DESTINATION ${INSTALL_LIB_DIR}
-        COMPONENT library
-        NAMELINK_COMPONENT development
+    LIBRARY DESTINATION ${INSTALL_LIB_DIR}
+    COMPONENT library
+    NAMELINK_COMPONENT development
 )
 
 # Install header files
 install(FILES ${HEADER_LIST}
-        DESTINATION include/p101_posix_xsi
+    DESTINATION include/p101_posix_xsi
 )
 
 install(FILES ${HEADER_LIST_SYS}
-        DESTINATION include/p101_posix_xsi/sys
+    DESTINATION include/p101_posix_xsi/sys
 )

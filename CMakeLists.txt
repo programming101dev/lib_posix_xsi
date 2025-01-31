@@ -263,8 +263,11 @@ if (CMAKE_C_COMPILER MATCHES ".*/clang.*")
     # Add a custom command to delete .gch files after the analysis
     add_custom_command(
         TARGET analysis POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/*.gch ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/*.gch
-        COMMENT "Removing .gch files"
+        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/*.gch
+        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/*.pch
+        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/*.gch
+        COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_SOURCE_DIR}/include/p101_posix_xsi/sys/*.pch
+        COMMENT "Removing .gch/.pch files"
     )
 
     # Add dependencies including 'analysis' for Clang compiler

@@ -1,12 +1,11 @@
 #include "p101_posix_xsi/sys/p101_msg.h"
 
-
 int p101_msgctl(const struct p101_env *env, struct p101_error *err, int msqid, int cmd, struct msqid_ds *buf)
 {
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = msgctl(msqid, cmd, buf);
 
     if(ret_val == -1)
@@ -22,7 +21,7 @@ int p101_msgget(const struct p101_env *env, struct p101_error *err, key_t key, i
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = msgget(key, msgflg);
 
     if(ret_val == -1)
@@ -38,7 +37,7 @@ ssize_t p101_msgrcv(const struct p101_env *env, struct p101_error *err, int msqi
     ssize_t ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = msgrcv(msqid, msgp, msgsz, msgtyp, msgflg);
 
     if(ret_val == -1)
@@ -54,7 +53,7 @@ int p101_msgsnd(const struct p101_env *env, struct p101_error *err, int msqid, c
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = msgsnd(msqid, msgp, msgsz, msgflg);
 
     if(ret_val == -1)

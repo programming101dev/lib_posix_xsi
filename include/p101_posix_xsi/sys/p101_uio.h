@@ -1,7 +1,6 @@
 #ifndef LIBP101_POSIX_XSI_SYS_P101_UIO_H
 #define LIBP101_POSIX_XSI_SYS_P101_UIO_H
 
-
 /*
  * Copyright 2022-2024 D'Arcy Smith.
  *
@@ -18,23 +17,19 @@
  * limitations under the License.
  */
 
-
 #include <p101_env/env.h>
 #include <sys/uio.h>
 
-
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-
-ssize_t p101_readv(const struct p101_env *env, struct p101_error *err, int fildes, const struct iovec *iov, int iovcnt);
-ssize_t p101_writev(const struct p101_env *env, struct p101_error *err, int fildes, const struct iovec *iov, int iovcnt);
-
+    ssize_t p101_readv(const struct p101_env *env, struct p101_error *err, int fildes, const struct iovec *iov, int iovcnt);
+    ssize_t p101_writev(const struct p101_env *env, struct p101_error *err, int fildes, const struct iovec *iov, int iovcnt);
 
 #ifdef __cplusplus
 }
 #endif
 
-
-#endif // LIBP101_POSIX_XSI_SYS_P101_UIO_H
+#endif    // LIBP101_POSIX_XSI_SYS_P101_UIO_H

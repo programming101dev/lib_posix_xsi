@@ -7,7 +7,7 @@ char *p101_crypt(const struct p101_env *env, struct p101_error *err, const char 
 
     P101_TRACE(env);
     errno   = 0;
-    ret_val = crypt(key, salt);
+    ret_val = crypt(key, salt);    // cppcheck-suppress cryptCalled
 
     if(ret_val == NULL)
     {

@@ -1,12 +1,11 @@
 #include "p101_posix_xsi/sys/p101_resource.h"
 
-
 int p101_getpriority(const struct p101_env *env, struct p101_error *err, int which, id_t who)
 {
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = getpriority(which, who);
 
     if(ret_val == -1)
@@ -22,7 +21,7 @@ int p101_getrlimit(const struct p101_env *env, struct p101_error *err, int resou
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = getrlimit(resource, rlp);
 
     if(ret_val == -1)
@@ -38,7 +37,7 @@ int p101_getrusage(const struct p101_env *env, struct p101_error *err, int who, 
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = getrusage(who, r_usage);
 
     if(ret_val == -1)
@@ -54,7 +53,7 @@ int p101_setpriority(const struct p101_env *env, struct p101_error *err, int whi
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = setpriority(which, who, value);
 
     if(ret_val == -1)
@@ -70,7 +69,7 @@ int p101_setrlimit(const struct p101_env *env, struct p101_error *err, int resou
     int ret_val;
 
     P101_TRACE(env);
-    errno = 0;
+    errno   = 0;
     ret_val = setrlimit(resource, rlp);
 
     if(ret_val == -1)

@@ -8,6 +8,23 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
+# Common compiler flags
+set(STANDARD_FLAGS
+        -D_POSIX_C_SOURCE=200809L
+        -D_XOPEN_SOURCE=700
+        -D_DEFAULT_SOURCE
+        #        -D_GNU_SOURCE
+        -D_DARWIN_C_SOURCE
+        -D__BSD_VISIBLE
+        -Werror
+)
+
+if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        list(APPEND STANDARD_FLAGS -D_GNU_SOURCE)
+    endif()
+endif()
+
 # Define library targets
 set(LIBRARY_TARGETS p101_posix_xsi)
 

@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_unistd.h"
+#include <crypt.h>
 #include <unistd.h>
 
 char *p101_crypt(const struct p101_env *env, struct p101_error *err, const char *key, const char *salt)

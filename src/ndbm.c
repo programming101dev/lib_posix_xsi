@@ -144,7 +144,7 @@ DBM *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const cha
 #if defined(__GNUC__) && !defined(__clang__)
     #pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
 #endif
-#if defined(__clang__)
+#ifdef __clang__
     #pragma GCC diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
 #endif
     ret_val = dbm_open(file,

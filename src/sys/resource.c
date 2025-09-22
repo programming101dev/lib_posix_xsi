@@ -6,7 +6,11 @@ int p101_getpriority(const struct p101_env *env, struct p101_error *err, int whi
 
     P101_TRACE(env);
     errno   = 0;
+#if defined(__FreeBSD__)
+    ret_val = getpriority(which, (int)who);
+#else
     ret_val = getpriority(which, who);
+#endif
 
     if(ret_val == -1)
     {
@@ -54,7 +58,11 @@ int p101_setpriority(const struct p101_env *env, struct p101_error *err, int whi
 
     P101_TRACE(env);
     errno   = 0;
+#if defined(__FreeBSD__)
+    ret_val = setpriority(which, (int)who, value);
+#else
     ret_val = setpriority(which, who, value);
+#endif
 
     if(ret_val == -1)
     {

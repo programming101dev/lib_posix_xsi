@@ -34,7 +34,7 @@ ENTRY *p101_hsearch(const struct p101_env *env, struct p101_error *err, ENTRY it
     errno   = 0;
     ret_val = hsearch(item, action);
 
-    if(ret_val == 0)
+    if(ret_val == NULL)
     {
         // TODO: what?
     }

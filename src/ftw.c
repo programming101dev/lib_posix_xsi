@@ -1,5 +1,6 @@
 #include "p101_posix_xsi/p101_ftw.h"
 
+/* cppcheck-suppress funcArgNamesDifferentUnnamed */
 int p101_nftw(const struct p101_env *env, struct p101_error *err, const char *path, int (*fn)(const char *, const struct stat *, int, struct FTW *), int fd_limit, int flags)
 {
     int ret_val;

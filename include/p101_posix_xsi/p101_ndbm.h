@@ -21,6 +21,14 @@
 #include <p101_env/env.h>
 #include <sys/stat.h>
 
+#ifndef P101_ATTR_WARN_UNUSED_RESULT
+    #if defined(__GNUC__) || defined(__clang__)
+        #define P101_ATTR_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+    #else
+        #define P101_ATTR_WARN_UNUSED_RESULT
+    #endif
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -33,7 +41,7 @@ extern "C"
     datum p101_dbm_fetch(const struct p101_env *env, struct p101_error *err, DBM *db, datum key);
     datum p101_dbm_firstkey(const struct p101_env *env, struct p101_error *err, DBM *db);
     datum p101_dbm_nextkey(const struct p101_env *env, struct p101_error *err, DBM *db);
-    DBM  *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const char *file, int open_flags, mode_t file_mode);
+    DBM  *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const char *file, int open_flags, mode_t file_mode) P101_ATTR_WARN_UNUSED_RESULT;
     int   p101_dbm_store(const struct p101_env *env, struct p101_error *err, DBM *db, datum key, datum content, int store_mode);
 
 #ifdef __cplusplus

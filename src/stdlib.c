@@ -28,9 +28,6 @@ int p101_grantpt(const struct p101_env *env, struct p101_error *err, int fildes)
     return ret_val;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-
 char *p101_initstate(const struct p101_env *env, struct p101_error *err, unsigned seed, char *state, size_t size)
 {
     char *ret_val;
@@ -41,13 +38,18 @@ char *p101_initstate(const struct p101_env *env, struct p101_error *err, unsigne
 
     if(ret_val == NULL)
     {
-        // TODO: is this an error?
+        if(errno != 0)
+        {
+            P101_ERROR_RAISE_ERRNO(err, errno);
+        }
+        else
+        {
+            P101_ERROR_RAISE_ERRNO(err, EINVAL);
+        }
     }
 
     return ret_val;
 }
-
-#pragma GCC diagnostic pop
 
 char *p101_l64a(const struct p101_env *env, long value)
 {
@@ -63,8 +65,19 @@ char *p101_l64a(const struct p101_env *env, long value)
 int p101_posix_openpt(const struct p101_env *env, struct p101_error *err, int oflag)
 {
     int ret_val;
+    int fault;
 
     P101_TRACE(env);
+    fault = p101_env_check_fault(env, "posix_openpt");
+
+    if(fault != 0)
+    {
+        P101_ERROR_RAISE_ERRNO(err, fault);
+        P101_TRACE_EXIT(env);
+
+        return -1;
+    }
+
     errno   = 0;
     ret_val = posix_openpt(oflag);
 
@@ -72,6 +85,12 @@ int p101_posix_openpt(const struct p101_env *env, struct p101_error *err, int of
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else
+    {
+        P101_TRACK_OPEN(env, ret_val);
+    }
+
+    P101_TRACE_EXIT(env);
 
     return ret_val;
 }
@@ -135,9 +154,6 @@ unsigned short *p101_seed48(const struct p101_env *env, unsigned short seed16v[3
     return ret_val;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-
 char *p101_setstate(const struct p101_env *env, struct p101_error *err, char *state)
 {
     char *ret_val;
@@ -148,13 +164,18 @@ char *p101_setstate(const struct p101_env *env, struct p101_error *err, char *st
 
     if(ret_val == NULL)
     {
-        // TODO; is this an error?
+        if(errno != 0)
+        {
+            P101_ERROR_RAISE_ERRNO(err, errno);
+        }
+        else
+        {
+            P101_ERROR_RAISE_ERRNO(err, EINVAL);
+        }
     }
 
     return ret_val;
 }
-
-#pragma GCC diagnostic pop
 
 void p101_srand48(const struct p101_env *env, long seedval)
 {

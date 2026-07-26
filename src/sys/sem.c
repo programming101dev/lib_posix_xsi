@@ -1,4 +1,16 @@
 #include "p101_posix_xsi/sys/p101_sem.h"
+#include <stdarg.h>
+
+static int semctl_uses_arg(int cmd);
+
+static int semctl_uses_arg(int cmd)
+{
+    int uses_arg;
+
+    uses_arg = (cmd == GETALL || cmd == SETALL || cmd == SETVAL || cmd == IPC_STAT || cmd == IPC_SET);
+
+    return uses_arg;
+}
 
 int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, int semnum, int cmd, ...)
 {
@@ -6,8 +18,29 @@ int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, i
 
     P101_TRACE(env);
     errno = 0;
-    // TODO: can I even handle this?
-    ret_val = semctl(semid, semnum, cmd, 0);
+
+    if(semctl_uses_arg(cmd))
+    {
+        va_list     args;
+        union semun arg;
+
+        va_start(args, cmd);
+        arg = va_arg(args, union semun);
+        va_end(args);
+
+#ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wclass-varargs"
+#endif
+        ret_val = semctl(semid, semnum, cmd, arg);
+#ifdef __clang__
+    #pragma clang diagnostic pop
+#endif
+    }
+    else
+    {
+        ret_val = semctl(semid, semnum, cmd);
+    }
 
     if(ret_val == -1)
     {

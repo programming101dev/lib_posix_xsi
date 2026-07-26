@@ -1,6 +1,22 @@
 #include "p101_posix_xsi/p101_utmpx.h"
 #include <utmpx.h>
 
+static int utmpx_error_code(void);
+
+static int utmpx_error_code(void)
+{
+    int err_code;
+
+    err_code = errno;
+
+    if(err_code == 0)
+    {
+        err_code = EIO;
+    }
+
+    return err_code;
+}
+
 void p101_endutxent(const struct p101_env *env)
 {
     P101_TRACE(env);
@@ -41,9 +57,6 @@ struct utmpx *p101_getutxline(const struct p101_env *env, const struct utmpx *li
     return ret_val;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-
 struct utmpx *p101_pututxline(const struct p101_env *env, struct p101_error *err, const struct utmpx *utmpx)
 {
     struct utmpx *ret_val;
@@ -54,13 +67,11 @@ struct utmpx *p101_pututxline(const struct p101_env *env, struct p101_error *err
 
     if(ret_val == NULL)
     {
-        // TODO: what?
+        P101_ERROR_RAISE_ERRNO(err, utmpx_error_code());
     }
 
     return ret_val;
 }
-
-#pragma GCC diagnostic pop
 
 void p101_setutxent(const struct p101_env *env)
 {

@@ -20,6 +20,19 @@
 #include <p101_env/env.h>
 #include <sys/sem.h>
 
+/*
+ * XSI semctl() uses union semun as its optional fourth argument, but Linux
+ * explicitly leaves the union for applications to define.
+ */
+#ifdef _SEM_SEMUN_UNDEFINED
+union semun
+{
+    int              val;
+    struct semid_ds *buf;
+    unsigned short  *array;
+};
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {

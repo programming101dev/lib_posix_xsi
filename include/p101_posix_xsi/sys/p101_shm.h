@@ -20,12 +20,20 @@
 #include <p101_env/env.h>
 #include <sys/shm.h>
 
+#ifndef P101_ATTR_WARN_UNUSED_RESULT
+    #if defined(__GNUC__) || defined(__clang__)
+        #define P101_ATTR_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+    #else
+        #define P101_ATTR_WARN_UNUSED_RESULT
+    #endif
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, const void *shmaddr, int shmflg);
+    void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, const void *shmaddr, int shmflg) P101_ATTR_WARN_UNUSED_RESULT;
     int   p101_shmctl(const struct p101_env *env, struct p101_error *err, int shmid, int cmd, struct shmid_ds *buf);
     int   p101_shmdt(const struct p101_env *env, struct p101_error *err, const void *shmaddr);
     int   p101_shmget(const struct p101_env *env, struct p101_error *err, key_t key, size_t size, int shmflg);

@@ -55,7 +55,7 @@ int p101_nice(const struct p101_env *env, struct p101_error *err, int value)
     errno   = 0;
     ret_val = nice(value);
 
-    if(ret_val == -1)
+    if(ret_val == -1 && errno != 0)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }

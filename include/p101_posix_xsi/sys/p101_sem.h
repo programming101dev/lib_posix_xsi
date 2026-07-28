@@ -21,17 +21,16 @@
 #include <sys/sem.h>
 
 /*
- * XSI semctl() uses union semun as its optional fourth argument, but Linux
- * explicitly leaves the union for applications to define.
+ * XSI semctl() uses a union as its optional fourth argument, but the system
+ * headers do not provide a portable union semun contract across Linux,
+ * FreeBSD, and macOS. Use the p101-owned union with p101_semctl().
  */
-#ifdef _SEM_SEMUN_UNDEFINED
-union semun
+union p101_semun
 {
     int              val;
     struct semid_ds *buf;
     unsigned short  *array;
 };
-#endif
 
 #ifdef __cplusplus
 extern "C"

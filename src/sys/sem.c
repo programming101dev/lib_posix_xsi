@@ -21,11 +21,11 @@ int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, i
 
     if(semctl_uses_arg(cmd))
     {
-        va_list     args;
-        union semun arg;
+        va_list          args;
+        union p101_semun arg;
 
         va_start(args, cmd);
-        arg = va_arg(args, union semun);
+        arg = va_arg(args, union p101_semun);
         va_end(args);
 
 #ifdef __clang__

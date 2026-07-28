@@ -42,6 +42,10 @@ To ensure you have all of the required tools installed, run:
 
 If you are missing tools follow these [instructions](https://docs.google.com/document/d/1ZPqlPD1mie5iwJ2XAcNGz7WeA86dTLerFXs9sAuwCco/edit?usp=drive_link). If something still looks wrong, `./doctor.sh` reports what actually works on this machine for this project.
 
+FreeBSD note: `p101_crypt()` needs the platform crypt library. The p101 setup
+repo and CI install `libxcrypt`; if you maintain a FreeBSD machine by hand,
+install that package before building this library.
+
 ## **Configuring the Build**
 
 Tell CMake which compiler you want to use:

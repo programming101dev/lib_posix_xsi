@@ -39,7 +39,7 @@ int p101_lockf(const struct p101_env *env, struct p101_error *err, int fildes, i
     errno   = 0;
     ret_val = lockf(fildes, function, size);
 
-    if(ret_val == -1)
+    if(ret_val == -1 && errno != 0)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }

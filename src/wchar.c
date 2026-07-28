@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_wchar.h"
+#include "p101_posix_xsi_internal.h"
 #include <wchar.h>
 
 int p101_wcswidth(const struct p101_env *env, const wchar_t *pwcs, size_t n)
@@ -9,6 +10,7 @@ int p101_wcswidth(const struct p101_env *env, const wchar_t *pwcs, size_t n)
     errno   = 0;
     ret_val = wcswidth(pwcs, n);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -20,5 +22,6 @@ int p101_wcwidth(const struct p101_env *env, wchar_t wc)
     errno   = 0;
     ret_val = wcwidth(wc);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

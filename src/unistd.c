@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_unistd.h"
+#include "p101_posix_xsi_internal.h"
 #ifdef __linux__
     #include <crypt.h>
 #endif
@@ -9,14 +10,16 @@ char *p101_crypt(const struct p101_env *env, struct p101_error *err, const char 
     char *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = crypt(key, salt);    // cppcheck-suppress cryptCalled
 
     if(ret_val == NULL)
     {
-        P101_ERROR_RAISE_ERRNO(err, errno);
+        P101_ERROR_RAISE_ERRNO(err, (errno == 0) ? EIO : errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -28,6 +31,7 @@ long p101_gethostid(const struct p101_env *env)
     errno   = 0;
     ret_val = gethostid();
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -36,6 +40,7 @@ int p101_lockf(const struct p101_env *env, struct p101_error *err, int fildes, i
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = lockf(fildes, function, size);
 
@@ -44,6 +49,7 @@ int p101_lockf(const struct p101_env *env, struct p101_error *err, int fildes, i
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -52,6 +58,7 @@ int p101_nice(const struct p101_env *env, struct p101_error *err, int value)
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = nice(value);
 
@@ -60,6 +67,7 @@ int p101_nice(const struct p101_env *env, struct p101_error *err, int value)
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -68,6 +76,7 @@ int p101_setregid(const struct p101_env *env, struct p101_error *err, gid_t rgid
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = setregid(rgid, egid);
 
@@ -76,6 +85,7 @@ int p101_setregid(const struct p101_env *env, struct p101_error *err, gid_t rgid
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -84,6 +94,7 @@ int p101_setreuid(const struct p101_env *env, struct p101_error *err, uid_t ruid
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = setreuid(ruid, euid);
 
@@ -92,6 +103,7 @@ int p101_setreuid(const struct p101_env *env, struct p101_error *err, uid_t ruid
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -100,6 +112,7 @@ void p101_swab(const struct p101_env *env, const void *restrict src, void *restr
     P101_TRACE(env);
     errno = 0;
     swab(src, dest, nbytes);
+    P101_TRACE_EXIT(env);
 }
 
 void p101_sync(const struct p101_env *env)
@@ -107,4 +120,5 @@ void p101_sync(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     sync();
+    P101_TRACE_EXIT(env);
 }

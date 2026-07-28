@@ -1,3 +1,4 @@
+#include "../p101_posix_xsi_internal.h"
 #include "p101_posix_xsi/sys/p101_shm.h"
 
 void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, const void *shmaddr, int shmflg)
@@ -5,6 +6,7 @@ void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, 
     void *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, (void *)-1);    // NOLINT(performance-no-int-to-ptr)
     errno   = 0;
     ret_val = shmat(shmid, shmaddr, shmflg);
 
@@ -13,6 +15,7 @@ void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, 
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -21,6 +24,7 @@ int p101_shmctl(const struct p101_env *env, struct p101_error *err, int shmid, i
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = shmctl(shmid, cmd, buf);
 
@@ -29,6 +33,7 @@ int p101_shmctl(const struct p101_env *env, struct p101_error *err, int shmid, i
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -37,6 +42,7 @@ int p101_shmdt(const struct p101_env *env, struct p101_error *err, const void *s
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = shmdt(shmaddr);
 
@@ -45,6 +51,7 @@ int p101_shmdt(const struct p101_env *env, struct p101_error *err, const void *s
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -53,6 +60,7 @@ int p101_shmget(const struct p101_env *env, struct p101_error *err, key_t key, s
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = shmget(key, size, shmflg);
 
@@ -61,5 +69,6 @@ int p101_shmget(const struct p101_env *env, struct p101_error *err, key_t key, s
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

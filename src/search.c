@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_search.h"
+#include "p101_posix_xsi_internal.h"
 
 static int search_error_code(int fallback);
 
@@ -21,6 +22,7 @@ int p101_hcreate(const struct p101_env *env, struct p101_error *err, size_t nel)
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, 0);
     errno   = 0;
     ret_val = hcreate(nel);
 
@@ -29,6 +31,7 @@ int p101_hcreate(const struct p101_env *env, struct p101_error *err, size_t nel)
         P101_ERROR_RAISE_ERRNO(err, search_error_code(ENOMEM));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -37,6 +40,7 @@ void p101_hdestroy(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     hdestroy();
+    P101_TRACE_EXIT(env);
 }
 
 ENTRY *p101_hsearch(const struct p101_env *env, struct p101_error *err, ENTRY item, ACTION action)
@@ -44,6 +48,7 @@ ENTRY *p101_hsearch(const struct p101_env *env, struct p101_error *err, ENTRY it
     ENTRY *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = hsearch(item, action);
 
@@ -52,6 +57,7 @@ ENTRY *p101_hsearch(const struct p101_env *env, struct p101_error *err, ENTRY it
         P101_ERROR_RAISE_ERRNO(err, search_error_code(ENOMEM));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -60,17 +66,18 @@ void p101_insque(const struct p101_env *env, void *element, void *pred)
     P101_TRACE(env);
     errno = 0;
     insque(element, pred);
+    P101_TRACE_EXIT(env);
 }
 
-void *p101_lfind(const struct p101_env *env, struct p101_error *err, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))
+void *p101_lfind(const struct p101_env *env, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *))
 {
     void *ret_val;
 
     P101_TRACE(env);
-    (void)err;
     errno   = 0;
     ret_val = lfind(key, base, nelp, width, compar);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -79,6 +86,7 @@ void *p101_lsearch(const struct p101_env *env, struct p101_error *err, const voi
     void *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = lsearch(key, base, nelp, width, compar);
 
@@ -87,6 +95,7 @@ void *p101_lsearch(const struct p101_env *env, struct p101_error *err, const voi
         P101_ERROR_RAISE_ERRNO(err, search_error_code(ENOMEM));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -95,6 +104,7 @@ void p101_remque(const struct p101_env *env, void *element)
     P101_TRACE(env);
     errno = 0;
     remque(element);
+    P101_TRACE_EXIT(env);
 }
 
 void *p101_tdelete(const struct p101_env *env, const void *restrict key, void **restrict rootp, int (*compar)(const void *, const void *))
@@ -105,6 +115,7 @@ void *p101_tdelete(const struct p101_env *env, const void *restrict key, void **
     errno   = 0;
     ret_val = tdelete(key, rootp, compar);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -116,6 +127,7 @@ void *p101_tfind(const struct p101_env *env, const void *key, void *const *rootp
     errno   = 0;
     ret_val = tfind(key, rootp, compar);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -124,6 +136,7 @@ void *p101_tsearch(const struct p101_env *env, struct p101_error *err, const voi
     void *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = tsearch(key, rootp, compar);
 
@@ -132,6 +145,7 @@ void *p101_tsearch(const struct p101_env *env, struct p101_error *err, const voi
         P101_ERROR_RAISE_ERRNO(err, search_error_code(ENOMEM));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -140,4 +154,5 @@ void p101_twalk(const struct p101_env *env, const void *root, void (*action)(con
     P101_TRACE(env);
     errno = 0;
     twalk(root, action);
+    P101_TRACE_EXIT(env);
 }

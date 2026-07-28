@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_syslog.h"
+#include "p101_posix_xsi_internal.h"
 #include <syslog.h>
 
 void p101_closelog(const struct p101_env *env)
@@ -6,6 +7,7 @@ void p101_closelog(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     closelog();
+    P101_TRACE_EXIT(env);
 }
 
 void p101_openlog(const struct p101_env *env, const char *ident, int logopt, int facility)
@@ -13,6 +15,7 @@ void p101_openlog(const struct p101_env *env, const char *ident, int logopt, int
     P101_TRACE(env);
     errno = 0;
     openlog(ident, logopt, facility);
+    P101_TRACE_EXIT(env);
 }
 
 int p101_setlogmask(const struct p101_env *env, int maskpri)
@@ -23,5 +26,6 @@ int p101_setlogmask(const struct p101_env *env, int maskpri)
     errno   = 0;
     ret_val = setlogmask(maskpri);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

@@ -1,3 +1,4 @@
+#include "../p101_posix_xsi_internal.h"
 #include "p101_posix_xsi/sys/p101_msg.h"
 
 int p101_msgctl(const struct p101_env *env, struct p101_error *err, int msqid, int cmd, struct msqid_ds *buf)
@@ -5,6 +6,7 @@ int p101_msgctl(const struct p101_env *env, struct p101_error *err, int msqid, i
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = msgctl(msqid, cmd, buf);
 
@@ -13,6 +15,7 @@ int p101_msgctl(const struct p101_env *env, struct p101_error *err, int msqid, i
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -21,6 +24,7 @@ int p101_msgget(const struct p101_env *env, struct p101_error *err, key_t key, i
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = msgget(key, msgflg);
 
@@ -29,6 +33,7 @@ int p101_msgget(const struct p101_env *env, struct p101_error *err, key_t key, i
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -37,6 +42,7 @@ ssize_t p101_msgrcv(const struct p101_env *env, struct p101_error *err, int msqi
     ssize_t ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = msgrcv(msqid, msgp, msgsz, msgtyp, msgflg);
 
@@ -45,6 +51,7 @@ ssize_t p101_msgrcv(const struct p101_env *env, struct p101_error *err, int msqi
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -53,6 +60,7 @@ int p101_msgsnd(const struct p101_env *env, struct p101_error *err, int msqid, c
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = msgsnd(msqid, msgp, msgsz, msgflg);
 
@@ -61,5 +69,6 @@ int p101_msgsnd(const struct p101_env *env, struct p101_error *err, int msqid, c
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

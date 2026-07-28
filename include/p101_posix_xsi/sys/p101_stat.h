@@ -31,7 +31,4 @@ extern "C"
 }
 #endif
 
-// Not on macOS
-// int p101_mknodat(const struct p101_env *env, struct p101_error *err, int fd, const char *path, mode_t mode, dev_t dev);
-
 #endif    // LIBP101_POSIX_XSI_SYS_P101_STAT_H

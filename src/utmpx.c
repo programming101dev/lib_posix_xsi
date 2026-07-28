@@ -1,4 +1,5 @@
 #include "p101_posix_xsi/p101_utmpx.h"
+#include "p101_posix_xsi_internal.h"
 #include <utmpx.h>
 
 static int utmpx_error_code(void);
@@ -22,6 +23,7 @@ void p101_endutxent(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     endutxent();
+    P101_TRACE_EXIT(env);
 }
 
 struct utmpx *p101_getutxent(const struct p101_env *env)
@@ -32,6 +34,7 @@ struct utmpx *p101_getutxent(const struct p101_env *env)
     errno   = 0;
     ret_val = getutxent();
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -43,6 +46,7 @@ struct utmpx *p101_getutxid(const struct p101_env *env, const struct utmpx *id)
     errno   = 0;
     ret_val = getutxid(id);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -54,6 +58,7 @@ struct utmpx *p101_getutxline(const struct p101_env *env, const struct utmpx *li
     errno   = 0;
     ret_val = getutxline(line);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -62,6 +67,7 @@ struct utmpx *p101_pututxline(const struct p101_env *env, struct p101_error *err
     struct utmpx *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = pututxline(utmpx);
 
@@ -70,6 +76,7 @@ struct utmpx *p101_pututxline(const struct p101_env *env, struct p101_error *err
         P101_ERROR_RAISE_ERRNO(err, utmpx_error_code());
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -78,4 +85,5 @@ void p101_setutxent(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     setutxent();
+    P101_TRACE_EXIT(env);
 }

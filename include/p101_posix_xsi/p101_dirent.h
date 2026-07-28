@@ -26,7 +26,7 @@ extern "C"
 #endif
 
     void p101_seekdir(const struct p101_env *env, DIR *dirp, long loc);
-    long p101_telldir(const struct p101_env *env, DIR *dirp);
+    long p101_telldir(const struct p101_env *env, struct p101_error *err, DIR *dirp);
 
 #ifdef __cplusplus
 }

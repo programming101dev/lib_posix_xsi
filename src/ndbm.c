@@ -1,40 +1,24 @@
 #include "p101_posix_xsi/p101_ndbm.h"
+#include "p101_posix_xsi_internal.h"
 
-static int dbm_error_code(void);
+static int dbm_error_code(int saved_errno);
 
-static int dbm_error_code(void)
+static int dbm_error_code(int saved_errno)
 {
-    int err_code;
-
-    err_code = errno;
-
-    if(err_code == 0)
+    if(saved_errno == 0)
     {
-        err_code = EIO;
+        saved_errno = EIO;
     }
 
-    return err_code;
+    return saved_errno;
 }
 
-int p101_dbm_clearerr(const struct p101_env *env, struct p101_error *err, DBM *db)
+void p101_dbm_clearerr(const struct p101_env *env, DBM *db)
 {
-    int ret_val;
-
     P101_TRACE(env);
     errno = 0;
     dbm_clearerr(db);
-
-    if(p101_dbm_error(env, db))
-    {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
-        ret_val = -1;
-    }
-    else
-    {
-        ret_val = 0;
-    }
-
-    return ret_val;
+    P101_TRACE_EXIT(env);
 }
 
 void p101_dbm_close(const struct p101_env *env, DBM *db)
@@ -42,6 +26,7 @@ void p101_dbm_close(const struct p101_env *env, DBM *db)
     P101_TRACE(env);
     errno = 0;
     dbm_close(db);
+    P101_TRACE_EXIT(env);
 }
 
 int p101_dbm_delete(const struct p101_env *env, struct p101_error *err, DBM *db, datum key)
@@ -49,14 +34,16 @@ int p101_dbm_delete(const struct p101_env *env, struct p101_error *err, DBM *db,
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = dbm_delete(db, key);
 
     if(ret_val < 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -68,6 +55,7 @@ int p101_dbm_error(const struct p101_env *env, DBM *db)
     errno   = 0;
     ret_val = dbm_error(db);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -76,17 +64,22 @@ int p101_dbm_error(const struct p101_env *env, DBM *db)
 
 datum p101_dbm_fetch(const struct p101_env *env, struct p101_error *err, DBM *db, datum key)
 {
+    int   saved_errno;
     datum ret_val;
 
     P101_TRACE(env);
-    errno   = 0;
-    ret_val = dbm_fetch(db, key);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
+    dbm_clearerr(db);
+    errno       = 0;
+    ret_val     = dbm_fetch(db, key);
+    saved_errno = errno;
 
-    if(ret_val.dptr == NULL && p101_dbm_error(env, db))
+    if(ret_val.dptr == NULL && dbm_error(db) != 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -97,17 +90,22 @@ datum p101_dbm_fetch(const struct p101_env *env, struct p101_error *err, DBM *db
 
 datum p101_dbm_firstkey(const struct p101_env *env, struct p101_error *err, DBM *db)
 {
+    int   saved_errno;
     datum ret_val;
 
     P101_TRACE(env);
-    errno   = 0;
-    ret_val = dbm_firstkey(db);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
+    dbm_clearerr(db);
+    errno       = 0;
+    ret_val     = dbm_firstkey(db);
+    saved_errno = errno;
 
-    if(ret_val.dptr == NULL && p101_dbm_error(env, db))
+    if(ret_val.dptr == NULL && dbm_error(db) != 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -118,17 +116,22 @@ datum p101_dbm_firstkey(const struct p101_env *env, struct p101_error *err, DBM 
 
 datum p101_dbm_nextkey(const struct p101_env *env, struct p101_error *err, DBM *db)
 {
+    int   saved_errno;
     datum ret_val;
 
     P101_TRACE(env);
-    errno   = 0;
-    ret_val = dbm_nextkey(db);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
+    dbm_clearerr(db);
+    errno       = 0;
+    ret_val     = dbm_nextkey(db);
+    saved_errno = errno;
 
-    if(ret_val.dptr == NULL && p101_dbm_error(env, db))
+    if(ret_val.dptr == NULL && dbm_error(db) != 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -139,6 +142,7 @@ DBM *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const cha
     DBM *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno = 0;
 #pragma GCC diagnostic push
 #if defined(__GNUC__) && !defined(__clang__)
@@ -157,9 +161,10 @@ DBM *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const cha
 
     if(ret_val == NULL)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -168,13 +173,15 @@ int p101_dbm_store(const struct p101_env *env, struct p101_error *err, DBM *db, 
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = dbm_store(db, key, content, store_mode);
 
     if(ret_val < 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, dbm_error_code());
+        P101_ERROR_RAISE_ERRNO(err, dbm_error_code(errno));
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

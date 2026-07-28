@@ -23,7 +23,8 @@
 /*
  * XSI semctl() uses a union as its optional fourth argument, but the system
  * headers do not provide a portable union semun contract across Linux,
- * FreeBSD, and macOS. Use the p101-owned union with p101_semctl().
+ * FreeBSD, and macOS. Commands without a fourth argument use p101_semctl();
+ * GETALL, SETALL, SETVAL, IPC_STAT, and IPC_SET use p101_semctl_arg().
  */
 union p101_semun
 {
@@ -37,7 +38,8 @@ extern "C"
 {
 #endif
 
-    int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, int semnum, int cmd, ...);
+    int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, int semnum, int cmd);
+    int p101_semctl_arg(const struct p101_env *env, struct p101_error *err, int semid, int semnum, int cmd, union p101_semun arg);
     int p101_semget(const struct p101_env *env, struct p101_error *err, key_t key, int nsems, int semflg);
     int p101_semop(const struct p101_env *env, struct p101_error *err, int semid, struct sembuf *sops, size_t nsops);
 

@@ -28,10 +28,10 @@ extern "C"
     int             p101_grantpt(const struct p101_env *env, struct p101_error *err, int fildes);
     char           *p101_initstate(const struct p101_env *env, struct p101_error *err, unsigned seed, char *state, size_t size);
     char           *p101_l64a(const struct p101_env *env, long value);
-    int             p101_posix_openpt(const struct p101_env *env, struct p101_error *err, int oflag);
+    int             p101_posix_openpt(const struct p101_env *env, struct p101_error *err, int oflag) P101_ATTR_WARN_UNUSED_RESULT;
     char           *p101_ptsname(const struct p101_env *env, struct p101_error *err, int fildes);
     int             p101_putenv(const struct p101_env *env, struct p101_error *err, char *string);
-    char           *p101_realpath(const struct p101_env *env, struct p101_error *err, const char *restrict file_name, char *restrict resolved_name);
+    char           *p101_realpath(const struct p101_env *env, struct p101_error *err, const char *restrict file_name, char *restrict resolved_name) P101_ATTR_WARN_UNUSED_RESULT;
     unsigned short *p101_seed48(const struct p101_env *env, unsigned short seed16v[3]);
     char           *p101_setstate(const struct p101_env *env, struct p101_error *err, char *state);
     void            p101_srand48(const struct p101_env *env, long seedval);
@@ -41,20 +41,5 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-
-// Not on FreeBSD
-// void p101_setkey(const struct p101_env *env, struct p101_error *err, const char *key);
-
-// obsolete
-// double p101_drand48(const struct p101_env *env);
-// double p101_erand48(const struct p101_env *env, unsigned short xsubi[3]);
-// long p101_jrand48(const struct p101_env *env, unsigned short xsubi[3]);
-// void p101_lcong48(const struct p101_env *env, unsigned short param[7]);
-// long p101_lrand48(const struct p101_env *env);
-// long p101_mrand48(const struct p101_env *env);
-// long p101_nrand48(const struct p101_env *env, unsigned short xsubi[3]);
-
-// unsafe
-// long p101_random(const struct p101_env *env);
 
 #endif    // LIBP101_POSIX_XSI_P101_STDLIB_H

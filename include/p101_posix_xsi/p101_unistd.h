@@ -25,6 +25,10 @@ extern "C"
 {
 #endif
 
+    /*
+     * Compatibility interface only: crypt() uses static storage, need not be
+     * thread-safe, and should not be used to create new password hashes.
+     */
     char *p101_crypt(const struct p101_env *env, struct p101_error *err, const char *key, const char *salt);
     long  p101_gethostid(const struct p101_env *env);
     int   p101_lockf(const struct p101_env *env, struct p101_error *err, int fildes, int function, off_t size);
@@ -37,8 +41,5 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-
-// Not on FreeBSD
-// void p101_encrypt(const struct p101_env *env, struct p101_error *err, char block[64], int edflag);
 
 #endif    // LIBP101_POSIX_XSI_P101_UNISTD_H

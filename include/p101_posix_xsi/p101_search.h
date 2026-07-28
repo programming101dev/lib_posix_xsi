@@ -29,7 +29,7 @@ extern "C"
     void   p101_hdestroy(const struct p101_env *env);
     ENTRY *p101_hsearch(const struct p101_env *env, struct p101_error *err, ENTRY item, ACTION action);
     void   p101_insque(const struct p101_env *env, void *element, void *pred);
-    void  *p101_lfind(const struct p101_env *env, struct p101_error *err, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *));
+    void  *p101_lfind(const struct p101_env *env, const void *key, const void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *));
     void  *p101_lsearch(const struct p101_env *env, struct p101_error *err, const void *key, void *base, size_t *nelp, size_t width, int (*compar)(const void *, const void *));
     void   p101_remque(const struct p101_env *env, void *element);
     void  *p101_tdelete(const struct p101_env *env, const void *restrict key, void **restrict rootp, int (*compar)(const void *, const void *));

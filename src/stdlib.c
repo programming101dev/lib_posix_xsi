@@ -1,5 +1,7 @@
 #include "p101_posix_xsi/p101_stdlib.h"
+#include "p101_posix_xsi_internal.h"
 #include <stdlib.h>
+#include <string.h>
 
 long p101_a64l(const struct p101_env *env, const char *s)
 {
@@ -9,6 +11,7 @@ long p101_a64l(const struct p101_env *env, const char *s)
     errno   = 0;
     ret_val = a64l(s);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -17,6 +20,7 @@ int p101_grantpt(const struct p101_env *env, struct p101_error *err, int fildes)
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = grantpt(fildes);
 
@@ -25,6 +29,7 @@ int p101_grantpt(const struct p101_env *env, struct p101_error *err, int fildes)
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -33,6 +38,7 @@ char *p101_initstate(const struct p101_env *env, struct p101_error *err, unsigne
     char *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = initstate(seed, state, size);
 
@@ -48,6 +54,7 @@ char *p101_initstate(const struct p101_env *env, struct p101_error *err, unsigne
         }
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -59,25 +66,16 @@ char *p101_l64a(const struct p101_env *env, long value)
     errno   = 0;
     ret_val = l64a(value);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
 int p101_posix_openpt(const struct p101_env *env, struct p101_error *err, int oflag)
 {
     int ret_val;
-    int fault;
 
     P101_TRACE(env);
-    fault = p101_env_check_fault(env, "posix_openpt");
-
-    if(fault != 0)
-    {
-        P101_ERROR_RAISE_ERRNO(err, fault);
-        P101_TRACE_EXIT(env);
-
-        return -1;
-    }
-
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = posix_openpt(oflag);
 
@@ -100,14 +98,16 @@ char *p101_ptsname(const struct p101_env *env, struct p101_error *err, int filde
     char *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = ptsname(fildes);
 
     if(ret_val == NULL)
     {
-        P101_ERROR_RAISE_ERRNO(err, errno);
+        P101_ERROR_RAISE_ERRNO(err, (errno == 0) ? EIO : errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -116,6 +116,7 @@ int p101_putenv(const struct p101_env *env, struct p101_error *err, char *string
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = putenv(string);
 
@@ -124,6 +125,7 @@ int p101_putenv(const struct p101_env *env, struct p101_error *err, char *string
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -132,6 +134,7 @@ char *p101_realpath(const struct p101_env *env, struct p101_error *err, const ch
     char *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = realpath(file_name, resolved_name);
 
@@ -139,7 +142,12 @@ char *p101_realpath(const struct p101_env *env, struct p101_error *err, const ch
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else if(resolved_name == NULL)
+    {
+        P101_TRACK_ALLOC(env, ret_val, strlen(ret_val) + 1U);
+    }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -151,6 +159,7 @@ unsigned short *p101_seed48(const struct p101_env *env, unsigned short seed16v[3
     errno   = 0;
     ret_val = seed48(seed16v);
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -159,6 +168,7 @@ char *p101_setstate(const struct p101_env *env, struct p101_error *err, char *st
     char *ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, NULL);
     errno   = 0;
     ret_val = setstate(state);
 
@@ -174,6 +184,7 @@ char *p101_setstate(const struct p101_env *env, struct p101_error *err, char *st
         }
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }
 
@@ -182,6 +193,7 @@ void p101_srand48(const struct p101_env *env, long seedval)
     P101_TRACE(env);
     errno = 0;
     srand48(seedval);
+    P101_TRACE_EXIT(env);
 }
 
 void p101_srandom(const struct p101_env *env, unsigned seed)
@@ -189,6 +201,7 @@ void p101_srandom(const struct p101_env *env, unsigned seed)
     P101_TRACE(env);
     errno = 0;
     srandom(seed);
+    P101_TRACE_EXIT(env);
 }
 
 int p101_unlockpt(const struct p101_env *env, struct p101_error *err, int fildes)
@@ -196,6 +209,7 @@ int p101_unlockpt(const struct p101_env *env, struct p101_error *err, int fildes
     int ret_val;
 
     P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
     errno   = 0;
     ret_val = unlockpt(fildes);
 
@@ -204,5 +218,6 @@ int p101_unlockpt(const struct p101_env *env, struct p101_error *err, int fildes
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
 
+    P101_TRACE_EXIT(env);
     return ret_val;
 }

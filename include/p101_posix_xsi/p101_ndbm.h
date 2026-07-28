@@ -21,20 +21,12 @@
 #include <p101_env/env.h>
 #include <sys/stat.h>
 
-#ifndef P101_ATTR_WARN_UNUSED_RESULT
-    #if defined(__GNUC__) || defined(__clang__)
-        #define P101_ATTR_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-    #else
-        #define P101_ATTR_WARN_UNUSED_RESULT
-    #endif
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    int   p101_dbm_clearerr(const struct p101_env *env, struct p101_error *err, DBM *db);
+    void  p101_dbm_clearerr(const struct p101_env *env, DBM *db);
     void  p101_dbm_close(const struct p101_env *env, DBM *db);
     int   p101_dbm_delete(const struct p101_env *env, struct p101_error *err, DBM *db, datum key);
     int   p101_dbm_error(const struct p101_env *env, DBM *db);

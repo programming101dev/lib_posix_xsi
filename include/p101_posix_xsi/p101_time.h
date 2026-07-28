@@ -25,13 +25,10 @@ extern "C"
 {
 #endif
 
-    char *p101_strptime(const struct p101_env *env, struct p101_error *err, const char *restrict buf, const char *restrict format, struct tm *restrict tm);
+    char *p101_strptime(const struct p101_env *env, const char *restrict buf, const char *restrict format, struct tm *restrict tm);
 
 #ifdef __cplusplus
 }
 #endif
-
-// Not in FreeBSD
-// struct tm *p101_getdate(const struct p101_env *env, struct p101_error *err, const char *string);
 
 #endif    // LIBP101_POSIX_XSI_P101_TIME_H

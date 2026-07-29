@@ -14,6 +14,10 @@ int p101_msgctl(const struct p101_env *env, struct p101_error *err, int msqid, i
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else if(cmd == IPC_RMID)
+    {
+        P101_TRACK_INTEGER_RESOURCE_RELEASE(env, "sysv-message-queue", msqid, NULL);
+    }
 
     P101_TRACE_EXIT(env);
     return ret_val;
@@ -31,6 +35,10 @@ int p101_msgget(const struct p101_env *env, struct p101_error *err, key_t key, i
     if(ret_val == -1)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
+    }
+    else if((msgflg & IPC_CREAT) != 0 && (msgflg & IPC_EXCL) != 0)
+    {
+        P101_TRACK_INTEGER_RESOURCE_ACQUIRE(env, "sysv-message-queue", ret_val, 0U, "created-exclusive");
     }
 
     P101_TRACE_EXIT(env);

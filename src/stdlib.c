@@ -1,5 +1,6 @@
 #include "p101_posix_xsi/p101_stdlib.h"
 #include "p101_posix_xsi_internal.h"
+#include <p101_c/p101_string.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -144,7 +145,7 @@ char *p101_realpath(const struct p101_env *env, struct p101_error *err, const ch
     }
     else if(resolved_name == NULL)
     {
-        P101_TRACK_ALLOC(env, ret_val, strlen(ret_val) + 1U);
+        P101_TRACK_ALLOC(env, ret_val, p101_strlen(env, ret_val) + 1U);
     }
 
     P101_TRACE_EXIT(env);

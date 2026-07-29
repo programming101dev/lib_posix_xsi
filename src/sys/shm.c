@@ -14,6 +14,10 @@ void *p101_shmat(const struct p101_env *env, struct p101_error *err, int shmid, 
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else
+    {
+        P101_TRACK_POINTER_RESOURCE_ACQUIRE(env, "sysv-shared-memory-attachment", ret_val, 0U, NULL);
+    }
 
     P101_TRACE_EXIT(env);
     return ret_val;
@@ -31,6 +35,10 @@ int p101_shmctl(const struct p101_env *env, struct p101_error *err, int shmid, i
     if(ret_val == -1)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
+    }
+    else if(cmd == IPC_RMID)
+    {
+        P101_TRACK_INTEGER_RESOURCE_RELEASE(env, "sysv-shared-memory", shmid, NULL);
     }
 
     P101_TRACE_EXIT(env);
@@ -50,6 +58,10 @@ int p101_shmdt(const struct p101_env *env, struct p101_error *err, const void *s
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else
+    {
+        P101_TRACK_POINTER_RESOURCE_RELEASE(env, "sysv-shared-memory-attachment", shmaddr, NULL);
+    }
 
     P101_TRACE_EXIT(env);
     return ret_val;
@@ -67,6 +79,10 @@ int p101_shmget(const struct p101_env *env, struct p101_error *err, key_t key, s
     if(ret_val == -1)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
+    }
+    else if((shmflg & IPC_CREAT) != 0 && (shmflg & IPC_EXCL) != 0)
+    {
+        P101_TRACK_INTEGER_RESOURCE_ACQUIRE(env, "sysv-shared-memory", ret_val, size, "created-exclusive");
     }
 
     P101_TRACE_EXIT(env);

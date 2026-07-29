@@ -306,7 +306,8 @@ static void test_faults_and_balanced_trace(struct p101_env *env, struct p101_err
     EXPECT(isnan(result));
     EXPECT(p101_error_is_errno(err, ENOMEM));
     EXPECT(fault.checks == 1);
-    EXPECT(counts->enters == 1);
+    /* The failed outer call obtains its sentinel through p101_nan. */
+    EXPECT(counts->enters == 2);
     EXPECT(counts->enters == counts->exits);
     p101_error_reset(err);
 

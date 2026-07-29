@@ -30,6 +30,10 @@ int p101_hcreate(const struct p101_env *env, struct p101_error *err, size_t nel)
     {
         P101_ERROR_RAISE_ERRNO(err, search_error_code(ENOMEM));
     }
+    else
+    {
+        P101_TRACK_RESOURCE_ACQUIRE(env, "process-hash-table", "global", nel, NULL);
+    }
 
     P101_TRACE_EXIT(env);
     return ret_val;
@@ -40,6 +44,7 @@ void p101_hdestroy(const struct p101_env *env)
     P101_TRACE(env);
     errno = 0;
     hdestroy();
+    P101_TRACK_RESOURCE_RELEASE(env, "process-hash-table", "global", NULL);
     P101_TRACE_EXIT(env);
 }
 

@@ -26,6 +26,7 @@ void p101_dbm_close(const struct p101_env *env, DBM *db)
     P101_TRACE(env);
     errno = 0;
     dbm_close(db);
+    P101_TRACK_POINTER_RESOURCE_RELEASE(env, "ndbm-database", db, NULL);
     P101_TRACE_EXIT(env);
 }
 
@@ -69,12 +70,12 @@ datum p101_dbm_fetch(const struct p101_env *env, struct p101_error *err, DBM *db
 
     P101_TRACE(env);
     P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
-    dbm_clearerr(db);
+    p101_dbm_clearerr(env, db);
     errno       = 0;
     ret_val     = dbm_fetch(db, key);
     saved_errno = errno;
 
-    if(ret_val.dptr == NULL && dbm_error(db) != 0)
+    if(ret_val.dptr == NULL && p101_dbm_error(env, db) != 0)
     {
         P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
@@ -95,12 +96,12 @@ datum p101_dbm_firstkey(const struct p101_env *env, struct p101_error *err, DBM 
 
     P101_TRACE(env);
     P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
-    dbm_clearerr(db);
+    p101_dbm_clearerr(env, db);
     errno       = 0;
     ret_val     = dbm_firstkey(db);
     saved_errno = errno;
 
-    if(ret_val.dptr == NULL && dbm_error(db) != 0)
+    if(ret_val.dptr == NULL && p101_dbm_error(env, db) != 0)
     {
         P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
@@ -121,12 +122,12 @@ datum p101_dbm_nextkey(const struct p101_env *env, struct p101_error *err, DBM *
 
     P101_TRACE(env);
     P101_POSIX_XSI_FAULT_RETURN(env, err, ((datum){.dptr = NULL, .dsize = 0}));
-    dbm_clearerr(db);
+    p101_dbm_clearerr(env, db);
     errno       = 0;
     ret_val     = dbm_nextkey(db);
     saved_errno = errno;
 
-    if(ret_val.dptr == NULL && dbm_error(db) != 0)
+    if(ret_val.dptr == NULL && p101_dbm_error(env, db) != 0)
     {
         P101_ERROR_RAISE_ERRNO(err, dbm_error_code(saved_errno));
     }
@@ -162,6 +163,10 @@ DBM *p101_dbm_open(const struct p101_env *env, struct p101_error *err, const cha
     if(ret_val == NULL)
     {
         P101_ERROR_RAISE_ERRNO(err, dbm_error_code(errno));
+    }
+    else
+    {
+        P101_TRACK_POINTER_RESOURCE_ACQUIRE(env, "ndbm-database", ret_val, 0U, file);
     }
 
     P101_TRACE_EXIT(env);

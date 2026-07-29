@@ -89,6 +89,8 @@ set(p101_posix_xsi_HEADERS
 set(p101_posix_xsi_LINK_LIBRARIES
         p101_error
         p101_env
+        p101_tool_event
+        p101_c
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")

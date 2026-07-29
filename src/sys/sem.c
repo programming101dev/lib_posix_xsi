@@ -29,6 +29,10 @@ int p101_semctl(const struct p101_env *env, struct p101_error *err, int semid, i
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
+    else if(cmd == IPC_RMID)
+    {
+        P101_TRACK_INTEGER_RESOURCE_RELEASE(env, "sysv-semaphore-set", semid, NULL);
+    }
 
     P101_TRACE_EXIT(env);
     return ret_val;
@@ -62,7 +66,6 @@ int p101_semctl_arg(const struct p101_env *env, struct p101_error *err, int semi
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
     }
-
     P101_TRACE_EXIT(env);
     return ret_val;
 }
@@ -79,6 +82,10 @@ int p101_semget(const struct p101_env *env, struct p101_error *err, key_t key, i
     if(ret_val == -1)
     {
         P101_ERROR_RAISE_ERRNO(err, errno);
+    }
+    else if((semflg & IPC_CREAT) != 0 && (semflg & IPC_EXCL) != 0)
+    {
+        P101_TRACK_INTEGER_RESOURCE_ACQUIRE(env, "sysv-semaphore-set", ret_val, 0U, "created-exclusive");
     }
 
     P101_TRACE_EXIT(env);

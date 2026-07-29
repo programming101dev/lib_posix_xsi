@@ -21,14 +21,14 @@
 
 static int failures;
 
-#define EXPECT(condition)                                                        \
-    do                                                                           \
-    {                                                                            \
-        if(!(condition))                                                         \
-        {                                                                        \
-            fprintf(stderr, "FAIL %s:%d: %s\n", __FILE__, __LINE__, #condition); \
-            failures++;                                                          \
-        }                                                                        \
+#define EXPECT(condition)                                                                                                                                                                                                                                          \
+    do                                                                                                                                                                                                                                                             \
+    {                                                                                                                                                                                                                                                              \
+        if(!(condition))                                                                                                                                                                                                                                           \
+        {                                                                                                                                                                                                                                                          \
+            fprintf(stderr, "FAIL %s:%d: %s\n", __FILE__, __LINE__, #condition);                                                                                                                                                                                   \
+            failures++;                                                                                                                                                                                                                                            \
+        }                                                                                                                                                                                                                                                          \
     } while(0)
 
 struct event_counts
@@ -109,6 +109,15 @@ static int stop_walk(const char *path, const struct stat *status, int type, stru
     return -1;
 }
 
+static int stop_ftw_walk(const char *path, const struct stat *status, int type)
+{
+    (void)path;
+    (void)status;
+    (void)type;
+    errno = EACCES;
+    return -1;
+}
+
 static int compare_ints(const void *left, const void *right)
 {
     const int *left_value;
@@ -128,6 +137,8 @@ static void test_status_contracts(struct p101_env *env, struct p101_error *err)
     char     *end;
 
     EXPECT(p101_nftw(env, err, ".", stop_walk, 4, FTW_PHYS) == -1);
+    EXPECT(p101_error_has_no_error(err));
+    EXPECT(p101_ftw(env, err, ".", stop_ftw_walk, 4) == -1);
     EXPECT(p101_error_has_no_error(err));
 
     EXPECT(p101_lfind(env, &key, values, &count, sizeof(values[0]), compare_ints) == &values[1]);

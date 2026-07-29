@@ -20,11 +20,14 @@
 #include <ftw.h>
 #include <p101_env/env.h>
 
+typedef int (*p101_ftw_fn)(const char *fpath, const struct stat *sb, int typeflag);
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    int p101_ftw(const struct p101_env *env, struct p101_error *err, const char *path, p101_ftw_fn fn, int ndirs);
     int p101_nftw(const struct p101_env *env, struct p101_error *err, const char *path, int (*fn)(const char *, const struct stat *, int, struct FTW *), int fd_limit, int flags);
 
 #ifdef __cplusplus

@@ -1,6 +1,13 @@
 #include "p101_posix_xsi/p101_ftw.h"
 #include "p101_posix_xsi_internal.h"
 
+struct ftw_callback_context
+{
+    p101_ftw_fn                  callback;
+    int                          stopped;
+    struct ftw_callback_context *previous;
+};
+
 struct nftw_callback_context
 {
     int (*callback)(const char *, const struct stat *, int, struct FTW *);
@@ -8,7 +15,23 @@ struct nftw_callback_context
     struct nftw_callback_context *previous;
 };
 
+static _Thread_local struct ftw_callback_context  *active_ftw_context;     // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
 static _Thread_local struct nftw_callback_context *active_nftw_context;    // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+
+static int call_ftw_callback(const char *path, const struct stat *status, int type)
+{
+    struct ftw_callback_context *context;
+    int                          result;
+
+    context = active_ftw_context;
+    result  = context->callback(path, status, type);
+    if(result != 0)
+    {
+        context->stopped = 1;
+    }
+
+    return result;
+}
 
 static int call_nftw_callback(const char *path, const struct stat *status, int type, struct FTW *walk)
 {
@@ -23,6 +46,34 @@ static int call_nftw_callback(const char *path, const struct stat *status, int t
     }
 
     return result;
+}
+
+/* cppcheck-suppress funcArgNamesDifferentUnnamed */
+int p101_ftw(const struct p101_env *env, struct p101_error *err, const char *path, p101_ftw_fn fn, int ndirs)
+{
+    struct ftw_callback_context context;
+    int                         saved_errno;
+    int                         ret_val;
+
+    P101_TRACE(env);
+    P101_POSIX_XSI_FAULT_RETURN(env, err, -1);
+    context.callback = fn;
+    context.stopped  = 0;
+    context.previous = active_ftw_context;
+
+    active_ftw_context = &context;
+    errno              = 0;
+    ret_val            = ftw(path, call_ftw_callback, ndirs);
+    saved_errno        = errno;
+    active_ftw_context = context.previous;
+
+    if(ret_val == -1 && context.stopped == 0)
+    {
+        P101_ERROR_RAISE_ERRNO(err, (saved_errno == 0) ? EIO : saved_errno);
+    }
+
+    P101_TRACE_EXIT(env);
+    return ret_val;
 }
 
 /* cppcheck-suppress funcArgNamesDifferentUnnamed */

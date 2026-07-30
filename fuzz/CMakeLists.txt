@@ -14,6 +14,15 @@ set(P101_PUBLIC_LINK_DIRS "" CACHE STRING "Extra p101 link dirs")
 separate_arguments(P101_PUBLIC_INCLUDE_DIRS_LIST NATIVE_COMMAND "${P101_PUBLIC_INCLUDE_DIRS}")
 separate_arguments(P101_PUBLIC_LINK_DIRS_LIST NATIVE_COMMAND "${P101_PUBLIC_LINK_DIRS}")
 
+if(P101_PUBLIC_LINK_DIRS_LIST)
+    find_library(P101_C_LIBRARY NAMES p101_c PATHS ${P101_PUBLIC_LINK_DIRS_LIST} NO_DEFAULT_PATH)
+else()
+    find_library(P101_C_LIBRARY NAMES p101_c)
+endif()
+if(NOT P101_C_LIBRARY)
+    message(FATAL_ERROR "Could not find the p101_c fuzz library")
+endif()
+
 set(P101_FUZZ_FLAGS -fsanitize=fuzzer,address,undefined -g -O1)
 
 add_executable(fuzz
@@ -22,6 +31,7 @@ add_executable(fuzz
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/math.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/string.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/time.c"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_tool_event/src/event.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_env/src/env.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_error/src/check.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_error/src/error.c"
@@ -39,3 +49,4 @@ if(APPLE)
 endif()
 target_compile_options(fuzz PRIVATE ${P101_FUZZ_FLAGS})
 target_link_options(fuzz PRIVATE ${P101_FUZZ_FLAGS})
+target_link_libraries(fuzz PRIVATE "${P101_C_LIBRARY}" m)

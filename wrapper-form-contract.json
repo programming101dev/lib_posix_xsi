@@ -1,0 +1,41 @@
+{
+  "schema": "p101-wrapper-form-contract-v1",
+  "selector": {
+    "include": "^p101_",
+    "public_only": true,
+    "minimum_matches": 1
+  },
+  "mapping": {
+    "strip_prefix": "p101_"
+  },
+  "context_parameter": {
+    "index": 0,
+    "type_contains": "p101_env",
+    "mode": "required"
+  },
+  "error_parameter": {
+    "index": 1,
+    "type_contains": "p101_error",
+    "mode": "optional"
+  },
+  "requirements": {
+    "balanced_trace": true,
+    "fault": "when-error",
+    "target_required": true,
+    "target_call_count": 1,
+    "compare_target_signature": true
+  },
+  "overrides": [
+    {
+      "match": "^p101_semctl_arg$",
+      "target": "semctl",
+      "compare_target_signature": false,
+      "reason": "The typed semun entry point replaces semctl's variadic argument."
+    },
+    {
+      "match": "^p101_(dbm_clearerr|setstate|semctl)$",
+      "compare_target_signature": false,
+      "reason": "These wrappers normalize incompatible platform signatures or remove a variadic argument."
+    }
+  ]
+}

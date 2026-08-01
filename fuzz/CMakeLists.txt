@@ -31,6 +31,7 @@ add_executable(fuzz
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/math.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/string.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/time.c"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_tool_event/src/record.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_tool_event/src/event.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_env/src/env.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/../../lib_error/src/check.c"
